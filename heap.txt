@@ -1,0 +1,71 @@
+The malloc(), calloc(), valloc(), realloc(), and reallocf() functions allocate memory. The allocated memory is aligned such that it can be used for any data type.
+
+     The calloc() function contiguously allocates enough space for count objects that are
+     size bytes of memory each and returns a pointer to the allocated memory.  The allo-
+     cated memory is filled with bytes of value zero.
+
+     The calloc() function allocates memory the size of which is equal to the num * size. That is, calloc() allocates sufficient memory for an array of num objects of size size. All bits in the allocated memory are initially set to zero.
+
+	The calloc() function returns a pointer to the first byte of the allocated region. If there is not enough memory to satisfy the request, a null pointer is returned. It is always important to verify that the return value is not null before attempting to use it.
+
+#include<stdlib.h>
+void *calloc(size_t num, size_t size);
+float *get_name(void)
+{
+	float *p;
+	p = calloc(100, sizeof(float));
+	if(!p)
+	{
+		printf("Allocation Error\n");
+		exit(1);
+	}
+	return p;
+}
+
+     The realloc() function tries to change the size of the allocation pointed to by ptr to
+     size, and returns ptr.  If there is not enough room to enlarge the memory allocation
+     pointed to by ptr, realloc() creates a new allocation, copies as much of the old data
+     pointed to by ptr as will fit to the new allocation, frees the old allocation, and
+     returns a pointer to the allocated memory.  If ptr is NULL, realloc() is identical to
+     a call to malloc() for size bytes.  If size is zero and ptr is not NULL, a new, mini-
+     mum sized object is allocated and the original object is freed.  When extending a
+     region allocated with calloc(3), realloc(3) does not guarantee that the additional
+     memory is also zero-filled.
+
+
+	If successful, calloc(), malloc(), realloc(), reallocf(), and valloc() functions
+     return a pointer to allocated memory.  If there is an error, they return a NULL
+     pointer and set errno to ENOMEM.
+
+     For realloc(), the input pointer is still valid if reallocation failed. 
+
+void *realloc(void *ptr, size_t size);
+void main()
+{
+	clrscr();
+	
+	char *p;
+	p = malloc(17);
+	
+	if(!p)
+	{
+		printf("Allocation Error\n");
+		exit(1);
+	}
+	
+	strcpy(p, "This is 16 chars");
+	p = realloc(p, 18);
+	
+	if(!p)
+	{
+		printf("Allocation Error\n");
+		exit(1);
+	}
+	
+	strcat(p, ".");
+	printf(p);
+	
+	free(p);
+	
+	getch();
+}
